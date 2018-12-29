@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+<body>
+
 <?php
 
 require_once 'AipOcr.php';
@@ -14,4 +20,14 @@ $image = file_get_contents('xuanzuo.jpg');
 $ImageInfo=array();
 $ImageInfo=$client->basicGeneral($image);
 
+$seats=array()
+
+for($i=0; $i<$mageInfo["words_result_num"]; $i++){
+	echo $ImageInfo["words_result"][$i][words];
+}
+
 echo var_dump($ImageInfo);
+?>
+</body>
+
+</html>
