@@ -1,21 +1,17 @@
 <?php
 
-require_once 'AipImageClassify.php';
+require_once 'AipOcr.php';
 
 // 你的 APPID AK SK
-const APP_ID = '15306269';
-const API_KEY = 'lQGPOBFg42CtqxS1AWpZGx56';
-const SECRET_KEY = 'FNuZ1oFMhwtxtm6fTCjOehaoWBa68hm3';
+const APP_ID = '15306487';
+const API_KEY = '8CnAZHIi57eSVfF7xUz9d8BB';
+const SECRET_KEY = 'f3K6P4rp4Pl8Y0Y6pXBmGd0Vab2MRXlA';
 
-$client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
+$client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
 
 $image = file_get_contents('xuanzuo.jpg');
 
-// 调用通用物体识别
-$client->advancedGeneral($image);
+$ImageInfo=array();
+$ImageInfo=$client->basicGeneral($image);
 
-// 如果有可选参数
-$options = array();
-
-// 带参数调用通用物体识别
-$client->advancedGeneral($image, $options);
+echo var_dump($ImageInfo);
