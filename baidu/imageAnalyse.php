@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
 
 <?php
 
@@ -37,6 +31,3 @@ header('Content-Type:application/json; charset=utf-8');
 array_push($seats, $price);
 exit(json_encode($seats));
 ?>
-</body>
-
-</html>
