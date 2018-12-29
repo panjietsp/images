@@ -21,13 +21,20 @@ $image = file_get_contents('xuanzuo.jpg');
 $ImageInfo=array();
 $ImageInfo=$client->basicGeneral($image);
 
-$seats=array()
-
-for($i=0; $i<$mageInfo["words_result_num"]; $i++){
-	echo $ImageInfo["words_result"][$i][words];
+$seats=array();
+$price=0;
+for($i=0; $i<$ImageInfo["words_result_num"]; $i++){
+	$info = $ImageInfo["words_result"][$i]["words"];
+	$pattern1 = "/([0-9])+排[0-9]+座/";
+	$pattern2 = "/([0-9]+)确认选座/";
+	preg_match($pattern1, $info, $matches1);
+	if($matches1[1]!=""){array_push($seats, $matches1[0]);}
+	preg_match($pattern2, $info, $matches2);
+	if($matches2[1]!=""){$price=$matches2[0];}	
 }
 
-echo var_dump($ImageInfo);
+echo var_dump($seats);
+echo $price;
 ?>
 </body>
 
