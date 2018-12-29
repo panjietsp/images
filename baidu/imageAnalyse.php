@@ -30,11 +30,12 @@ for($i=0; $i<$ImageInfo["words_result_num"]; $i++){
 	preg_match($pattern1, $info, $matches1);
 	if($matches1[1]!=""){array_push($seats, $matches1[0]);}
 	preg_match($pattern2, $info, $matches2);
-	if($matches2[1]!=""){$price=$matches2[0];}	
+	if($matches2[1]!=""){$price=$matches2[1];}	
 }
+header('Content-Type:application/json; charset=utf-8');
 
-echo var_dump($seats);
-echo $price;
+array_push($seats, $price);
+exit(json_encode($seats));
 ?>
 </body>
 
