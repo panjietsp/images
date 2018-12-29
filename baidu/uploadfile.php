@@ -1,31 +1,45 @@
 <?php
- date_default_timezone_set("Asia/Shanghai"); //设置时区
-$code = $_FILES['file'];//获取小程序传来的图片
-if(is_uploaded_file($_FILES['file']['tmp_name'])) {  
-    //把文件转存到你希望的目录（不要使用copy函数）  
-    $uploaded_file=$_FILES['file']['tmp_name'];  
-    $username = "min_img";
-    //我们给每个用户动态的创建一个文件夹  
-    $user_path=$_SERVER['DOCUMENT_ROOT']."/m_pro/".$username;  
-    //判断该用户文件夹是否已经有这个文件夹  
-    if(!file_exists($user_path)) {  
-        mkdir($user_path);  
-    }  
- 
-    //$move_to_file=$user_path."/".$_FILES['file']['name'];  
-    $file_true_name=$_FILES['file']['name'];  
-    $move_to_file=$user_path."/".time().rand(1,1000)."-".date("Y-m-d").substr($file_true_name,strrpos($file_true_name,"."));//strrops($file_true,".")查找“.”在字符串中最后一次出现的位置  
-    //echo "$uploaded_file   $move_to_file";  
-    if(move_uploaded_file($uploaded_file,iconv("utf-8","gb2312",$move_to_file))) {  
-        echo $_FILES['file']['name']."--上传成功".date("Y-m-d H:i:sa"); 
- 
-    } else {  
-        echo "上传失败".date("Y-m-d H:i:sa"); 
- 
-    }  
-} else {  
-    echo "上传失败".date("Y-m-d H:i:sa");  
-}  
- 
- 
+// 允许上传的图片后缀
+$allowedExts = array("gif", "jpeg", "jpg", "png");
+$temp = explode(".", $_FILES["file"]["name"]);
+echo $_FILES["file"]["size"];
+$extension = end($temp);     // 获取文件后缀名
+if ((($_FILES["file"]["type"] == "image/gif")
+|| ($_FILES["file"]["type"] == "image/jpeg")
+|| ($_FILES["file"]["type"] == "image/jpg")
+|| ($_FILES["file"]["type"] == "image/pjpeg")
+|| ($_FILES["file"]["type"] == "image/x-png")
+|| ($_FILES["file"]["type"] == "image/png"))
+&& ($_FILES["file"]["size"] < 204800)   // 小于 200 kb
+&& in_array($extension, $allowedExts))
+{
+    if ($_FILES["file"]["error"] > 0)
+    {
+        echo "错误：: " . $_FILES["file"]["error"] . "<br>";
+    }
+    else
+    {
+        echo "上传文件名: " . $_FILES["file"]["name"] . "<br>";
+        echo "文件类型: " . $_FILES["file"]["type"] . "<br>";
+        echo "文件大小: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+        echo "文件临时存储的位置: " . $_FILES["file"]["tmp_name"] . "<br>";
+        
+        // 判断当期目录下的 upload 目录是否存在该文件
+        // 如果没有 upload 目录，你需要创建它，upload 目录权限为 777
+        if (file_exists("upload/" . $_FILES["file"]["name"]))
+        {
+            echo $_FILES["file"]["name"] . " 文件已经存在。 ";
+        }
+        else
+        {
+            // 如果 upload 目录不存在该文件则将文件上传到 upload 目录下
+            move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
+            echo "文件存储在: " . "upload/" . $_FILES["file"]["name"];
+        }
+    }
+}
+else
+{
+    echo "非法的文件格式";
+}
 ?>
